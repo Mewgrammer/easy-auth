@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  api:
+    container_name: easy-auth
+    build:
+      context: .
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${PORT}:${PORT}
+    command: npm run start:prod
+    env_file:
+      - .env
+    networks:
+      - webnet
+    depends_on:
+      - api-db
+  api-db:
+    container_name: easy-auth-db
+    image: postgres:13
+    networks:
+      - webnet
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_SCHEMA}
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+networks:
+  webnet:
+volumes:
+  pgdata:
