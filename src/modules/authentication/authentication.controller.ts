@@ -3,7 +3,7 @@ import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from '../users/models/dto/create-user.dto';
 import { UserRequest } from './models/user-request.interface';
 import { JwtAuthGuard } from './jwt.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LoginUserDto } from './models/dto/login-user.dto';
 
 @ApiTags('authentication')
@@ -14,7 +14,8 @@ import { LoginUserDto } from './models/dto/login-user.dto';
 @Controller('auth')
 export class AuthenticationController {
   constructor(private readonly _authService: AuthenticationService) {}
-
+  
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get()
   public authenticate(@Req() request: UserRequest) {

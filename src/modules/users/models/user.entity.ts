@@ -3,7 +3,9 @@ import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
 import { User, UserRole } from '../../common/interfaces/user.interface';
 
-@Entity()
+@Entity({
+  name: "users",
+})
 export class UserEntity implements User {
   @PrimaryGeneratedColumn()
   public id: number;

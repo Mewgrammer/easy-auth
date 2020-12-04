@@ -2,9 +2,11 @@ version: '3.7'
 
 services:
   api:
-    container_name: easy-auth
+    container_name: easy-auth-api
+    restart: always
     build:
       context: .
+      target: builder
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -16,9 +18,9 @@ services:
     networks:
       - webnet
     depends_on:
-      - api-db
-  api-db:
-    container_name: easy-auth-db
+      - db
+  db:
+    restart: always
     image: postgres:13
     networks:
       - webnet
@@ -31,7 +33,21 @@ services:
       - ${DB_PORT}:${DB_PORT}
     volumes:
       - pgdata:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    links:
+      - "db:easy-auth-db"
 networks:
   webnet:
 volumes:
   pgdata:
+  pgadmin-data:
