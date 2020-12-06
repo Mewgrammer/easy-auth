@@ -9,7 +9,12 @@ import { UsersService } from '../../users/users.service';
 import { Repository } from 'typeorm';
 import { mockedJwtService } from './mocks/jwt.service.mock';
 import { mockedConfigService } from './mocks/config.service.mock';
-import { BadRequestException, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtPayload } from '../models/jwt-payload.interface';
 import { CreateUserDto } from '../../users/models/dto/create-user.dto';
 import { LoginUserDto } from '../models/dto/login-user.dto';
@@ -48,6 +53,9 @@ describe('AuthenticationService', () => {
   });
 
   it('should be defined', () => {
+    expect(userFactory).toBeDefined();
+    expect(userService).toBeDefined();
+    expect(jwtService).toBeDefined();
     expect(authService).toBeDefined();
   });
 
@@ -60,12 +68,12 @@ describe('AuthenticationService', () => {
     expect(registerResult.email).toEqual(request.email);
   });
 
-  it('register should throw BadRequestException on postgres UniqueViolation', async () => {
+  it('register should throw ConflictException on postgres UniqueViolation', async () => {
     const request: CreateUserDto = { email: 'test@test.de', password: 'password' };
     jest.spyOn(userService, 'createUser').mockRejectedValueOnce({
       code: PostgresErrorCode.UniqueViolation
     });
-    await expect(authService.register(request)).rejects.toThrow(BadRequestException);
+    await expect(authService.register(request)).rejects.toThrow(ConflictException);
   });
 
   it('register should throw InternalServerErrorException createUser failure', async () => {

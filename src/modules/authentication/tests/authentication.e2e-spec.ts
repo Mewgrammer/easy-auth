@@ -9,6 +9,7 @@ describe('AuthenticationController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
+    jest.setTimeout(10000);
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [ConfigModule.forRoot(), DatabaseModule, AuthenticationModule],
     }).compile();
