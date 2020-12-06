@@ -1,9 +1,10 @@
 # Easy Auth
 
-this is a Demo-Project using nestJS
+this is a demo REST-API project using nestJS
+
+[Documentation](https://mewgrammer.github.io/easy-auth/)
 
 ## Description
-
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
@@ -40,4 +41,4 @@ $ npm run test:cov
 
 ## License
 
-  This project is is [MIT licensed](LICENSE).
+  This project is [MIT licensed](LICENSE).
