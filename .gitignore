@@ -1,0 +1,6 @@
+.idea
+.env
+.scannerwork
+dist
+coverage
+node_modules
